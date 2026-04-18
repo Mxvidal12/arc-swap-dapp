@@ -1,6 +1,5 @@
 import type { Address } from "viem"
 import { zeroAddress } from "viem"
-import { arcTestnet } from "@/lib/arcChain"
 
 export const NATIVE_TOKEN_ADDRESS = zeroAddress
 
@@ -23,7 +22,7 @@ function normalizeTokenAddress(raw?: string): Address {
 
 const TOKEN_ENV = {
   USDC: normalizeTokenAddress(process.env.NEXT_PUBLIC_TOKEN_USDC),
-  WETH: normalizeTokenAddress(process.env.NEXT_PUBLIC_TOKEN_WETH),
+  EURC: normalizeTokenAddress(process.env.NEXT_PUBLIC_TOKEN_EURC),
   WBTC: normalizeTokenAddress(process.env.NEXT_PUBLIC_TOKEN_WBTC),
   DAI: normalizeTokenAddress(process.env.NEXT_PUBLIC_TOKEN_DAI),
   ARC: normalizeTokenAddress(process.env.NEXT_PUBLIC_TOKEN_ARC),
@@ -37,13 +36,13 @@ export const TOKENS: Token[] = [
     decimals: 6,
     logo: "/tokens/usdc.svg",
   },
-    {
-      symbol: "EURC",
-      name: "Euro Coin",
-      address: TOKEN_ENV.WETH,
-      decimals: 6,
-      logo: "/tokens/usdc.svg",
-    },
+  {
+    symbol: "EURC",
+    name: "Euro Coin",
+    address: TOKEN_ENV.EURC,
+    decimals: 6,
+    logo: "/tokens/eurc.svg",
+  },
   {
     symbol: "WBTC",
     name: "Wrapped Bitcoin",
@@ -83,11 +82,10 @@ export const AVAILABLE_TOKENS = TOKENS.filter(isTokenConfigured)
 
 export function getDefaultSwapTokens(): { tokenIn: Token; tokenOut: Token } {
   const usdc = AVAILABLE_TOKENS.find((t) => t.symbol === "USDC")
-  const weth = AVAILABLE_TOKENS.find((t) => t.symbol === "WETH")
-  const eth = AVAILABLE_TOKENS.find((t) => t.symbol === "ETH")
+  const eurc = AVAILABLE_TOKENS.find((t) => t.symbol === "EURC")
 
-  const tokenIn = usdc ?? eth ?? AVAILABLE_TOKENS[0] ?? TOKENS[0]
-  const tokenOut = weth ?? AVAILABLE_TOKENS.find((t) => t.symbol !== tokenIn.symbol) ?? tokenIn
+  const tokenIn = usdc ?? AVAILABLE_TOKENS[0] ?? TOKENS[0]
+  const tokenOut = eurc ?? AVAILABLE_TOKENS.find((t) => t.symbol !== tokenIn.symbol) ?? tokenIn
 
   return { tokenIn, tokenOut }
 }
